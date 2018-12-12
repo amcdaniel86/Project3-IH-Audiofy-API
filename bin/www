@@ -42,5 +42,5 @@ server.on('error', error => {
 });
 
 server.listen(process.env.PORT || 5000, () => {
-  console.log(`We are listening  //--0-0--\\ on http://localhost:${process.env.PORT}`);
+  console.log(`We are listening  /--0-0--\\ on http://localhost:${process.env.PORT}`);
 });

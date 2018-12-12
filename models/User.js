@@ -22,3 +22,5 @@ const User = mongoose.model('User', userSchema);
 module.exports = User;
 
 // first make a model in express api app.
+
+// IF TIME ADD AN ARTISTLIST model

@@ -4,7 +4,7 @@ const Playlist = require('../models/Playlist');
 // import Playlist model so we can perform Playlist.find, findByIdAndUpdate etc.
 
 
-// All Playlists List - Get Route
+// All Playlists List - Get Route - TESTED
 router.get('/playlists', (req, res, next) => {
   // this route.. keep in mind, is ACTUALLY /api/playlists because we prefixed this ENTIRE file with /api.
   // /api found in app.js line 58.
@@ -22,7 +22,7 @@ router.get('/playlists', (req, res, next) => {
 });
 
 
-// One Playlist Details - Get Route
+// One Playlist Details - Get Route - TESTED
 router.get('/playlist-details/:id', (req, res, next) => {
   // because we are making this route unique, with :id, not necessary to put at bottom of the file.
   // Ask Nick/Marcos if it is necessary since I prefer mine to not have /details.
@@ -38,17 +38,21 @@ router.get('/playlist-details/:id', (req, res, next) => {
 })
 
 
-// in a pure express app w/o react or angular, to Create a New Task or Object Instance, it involves a get route where a user sees a form to fill in information.
+// in a pure express app w/o react or angular, to Create a New Playlist or Object Instance, it involves a get route where a user sees a form to fill in information.
 // then that form submits to a post route where the info is received and then a new instance is created.
 // However, with an API and a REACT front end, we only need one route.. the POST route, no get route, since React takes care of the get route for us.
 // The form the user will fill out will be in the React app, and we will have to retrofit the React app, so it can successfully make a post request using Axios to the post route we define below.
 
-// Add/Create a New Playlist - Post Route
+
+
+// ADD/Create a New Playlist - Post Route - TESTED
+// req.body postman testing - use body selector to enter all the new keys and values.
 router.post('/playlists/add-new', (req, res, next) => {
     Playlist.create({
       // we will need to be sure when making the React app, we design a page that gives users the ability to make a post request to https://localhost:5000/api/playlists/add-new, and have to be sure that when we send the request from our React app, there are four things in the body of the request. they must be called theName, theCreator, theSongs[], and theTime.
       // this will be done with Axios.
-      creator: req.body.theCreator,
+      creator: req.user._id,
+      // not needed to add as a key because it is surmised from user that is already logged in.
       name: req.body.theName,
       songs: req.body.theSongs,
       time: req.body.theTime
@@ -62,10 +66,10 @@ router.post('/playlists/add-new', (req, res, next) => {
     })
 })
 
-// Edit a Task - Post Route
+// Edit a Playlist - Post Route - TESTED
 router.post('/playlist-edit/:id', (req, res, next) => {
     Playlist.findByIdAndUpdate(req.params.id, {
-      creator: req.body.theCreator,
+      creator: req.user._id,
       name: req.body.theName,
       songs: req.body.theSongs,
       time: req.body.theTime
@@ -87,7 +91,7 @@ router.post('/playlist-edit/:id', (req, res, next) => {
 })
 
 
-// Delete a Playlist - Post Route
+// Delete a Playlist - Post Route - TESTED
 router.post('/playlist-delete/:id', (req, res, next) => {
     Playlist.findByIdAndRemove(req.params.id)
       .then((deletedPlaylist) => {
@@ -96,7 +100,7 @@ router.post('/playlist-delete/:id', (req, res, next) => {
           // res.json takes an object, err or a custom one like message: .. { message: }
           return;
         }
-        res.json([{ message: 'task successfully deleted'}, deletedPlaylist])
+        res.json([{ message: 'Playlist successfully deleted'}, deletedPlaylist])
       })
       .catch((err) => {
         res.json(err);
@@ -113,4 +117,5 @@ module.exports = router;
 
 // cross origin request security - cors needs to be installed as well.
 
-// ALL ROUTES NEED TO BE TESTED WITH POSTMAN
+// Check with Nick on Edit routes quick
+// \, \, \, ALL ROUTES TESTED WITH POSTMAN

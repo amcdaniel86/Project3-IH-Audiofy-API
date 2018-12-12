@@ -2,7 +2,7 @@ const express      = require('express');
 const router       = express.Router();
 
 const passport     = require('passport');
-const brcypt       = require('bcryptjs');
+const bcrypt       = require('bcryptjs');
 
 const User         = require('../models/User');
 // require the User model!!
@@ -11,7 +11,7 @@ const User         = require('../models/User');
 
 
 
-// Register post route
+// Register post route - TESTED
 router.post('/signup', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -71,7 +71,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 
-// Login Post Route
+// Login Post Route - TESTED
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
     
@@ -101,7 +101,7 @@ router.post('/login', (req, res, next) => {
 });
 
 
-// Logout Post Route
+// Logout Post Route - TESTED
 router.post('/logout', (req, res, next) => {
   // req.logout() is defined by passport. is why it is used here.
   req.logout();
@@ -111,7 +111,7 @@ router.post('/logout', (req, res, next) => {
 // Staying Logged In Route (React feature)
 
 
-
+// LoggedInSession Get Route - TESTED
 router.get('/loggedinsession', (req, res, next) => {
   // req.isAuthenticated() is defined by passport.
   if (req.isAuthenticated()) {
@@ -121,9 +121,12 @@ router.get('/loggedinsession', (req, res, next) => {
   }
   res.status(500).json({ message: 'Unauthorized' });
 });
+// Should testing the loggedinsession pull up html and not a message in Postman?
 
 
 
 module.exports = router;
 
-// ALL ROUTES NEED TO BE TESTED WITH POSTMAN
+// \,\,\,\, ALL ROUTES TESTED WITH POSTMAN
+
+// req.body is only for post requests.
