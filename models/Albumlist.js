@@ -13,3 +13,5 @@ const albumlistSchema = new Schema({
 const Albumlist = mongoose.model('Albumlist', albumlistSchema);
 
 module.exports = Albumlist;
+
+// first make models in express api app.

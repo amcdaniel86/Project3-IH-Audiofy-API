@@ -123,3 +123,5 @@ router.get('/loginsession', (req, res, next) => {
 });
 
 module.exports = router;
+
+// ALL ROUTES NEED TO BE TESTED WITH POSTMAN
