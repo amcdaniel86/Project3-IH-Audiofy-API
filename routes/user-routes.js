@@ -112,15 +112,17 @@ router.post('/logout', (req, res, next) => {
 
 
 
-router.get('/loginsession', (req, res, next) => {
+router.get('/loggedinsession', (req, res, next) => {
   // req.isAuthenticated() is defined by passport.
   if (req.isAuthenticated()) {
       res.json(req.user);
-      // res.json refers to the user instance from the database being used to navigate the site. a json is a js object that has been created in the database, and is saved there. this says as long as authetication has happened, that json instance trying to log in can navigate the site.
+      // res.json refers to the user instance from the database being used to navigate the site. a json is a js object that has been created in the database, and is saved there. this says as long as authentication has happened, that json instance trying to log in can navigate the site.
       return;
   }
   res.status(500).json({ message: 'Unauthorized' });
 });
+
+
 
 module.exports = router;
 

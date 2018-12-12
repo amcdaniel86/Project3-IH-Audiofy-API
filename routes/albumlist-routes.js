@@ -6,8 +6,8 @@ const Albumlist = require('../models/Albumlist');
 
 // All Albumlists List - Get Route
 router.get('/albumlists', (req, res, next) => {
-  // this route.. keep in mind, is ACTUALLY /api/albumlists because we prefixed this ENTIRE file with /api.
-  // found in app.js line 58.
+  // this route.. keep in mind, is ACTUALLY /api/Albumlists because we prefixed this ENTIRE file with /api.
+  // /api found in app.js line 58.
 
     Albumlist.find()
       .then((allTheAlbumlists) => {
@@ -30,7 +30,7 @@ router.get('/albumlist-details/:id', (req, res, next) => {
       // when ANY route requires id, specific instance of a model, use REQ.PARAMS.ID inside the function argument. It will find the single Albumlist in the database.
       .then((aAlbumlist) => {
         res.json(aAlbumlist);
-          // ?? then render json for all the info about the Albumlist.
+          // ?? then render json for all the info about the Albumlist. this will reach out to the api for the target json's.
       })
       .catch((err) => {
           res.json(err);
@@ -41,7 +41,7 @@ router.get('/albumlist-details/:id', (req, res, next) => {
 // in a pure express app w/o react or angular, to Create a New Task or Object Instance, it involves a get route where a user sees a form to fill in information.
 // then that form submits to a post route where the info is received and then a new instance is created.
 // However, with an API and a REACT front end, we only need one route.. the POST route, no get route, since React takes care of the get route for us.
-// The form the user will fill out will be in the React app, and we will have to retrofit the React app, so it can successfully make a post request useing Axios to the post route we define below.
+// The form the user will fill out will be in the React app, and we will have to retrofit the React app, so it can successfully make a post request using Axios to the post route we define below.
 
 // Add/Create a New Albumlist - Post Route
 router.post('/albumlists/add-new', (req, res, next) => {
@@ -50,7 +50,7 @@ router.post('/albumlists/add-new', (req, res, next) => {
       // this will be done with Axios.
       creator: req.body.theCreator,
       name: req.body.theName,
-      albums: req.body.theAlbums,
+      songs: req.body.theSongs,
       time: req.body.theTime
     })
     .then((response) => {
@@ -67,7 +67,7 @@ router.post('/albumlist-edit/:id', (req, res, next) => {
     Albumlist.findByIdAndUpdate(req.params.id, {
       creator: req.body.theCreator,
       name: req.body.theName,
-      albums: req.body.theAlbums,
+      songs: req.body.theSongs,
       time: req.body.theTime
       // same as in the add a new Albumlist post route.
     })
@@ -76,9 +76,10 @@ router.post('/albumlist-edit/:id', (req, res, next) => {
         res.json({ message: 'sorry no Albumlist found' });
         return;
       }
-      // if there isn't an error, and we can't find the instance with that id, then we do an if statement saying response === null then show a message. because this situation does not show a true console error.
+      // if there isn't an error, but we also can't find the instance with that id, then the response from the database will equal null. then we do an if statement saying if response === null then show a message. because this situation does not show a true console error.
         res.json([{ message: 'the Albumlist was successfully updated'}, response ])
         // after res.json, the message is an object within the argument, IF you want to console.log the response as well, then you must make the argument an array, object message being 0 index, response being 1 index.
+        // res.json needs to take an array OR an object as the argument. to add a message as well, its an array, and the 2nd argument is response.
     })
     .catch((err) => {
       res.json(err.message);
@@ -89,13 +90,13 @@ router.post('/albumlist-edit/:id', (req, res, next) => {
 // Delete a Albumlist - Post Route
 router.post('/albumlist-delete/:id', (req, res, next) => {
     Albumlist.findByIdAndRemove(req.params.id)
-      .then((deletedTask) => {
-        if (deletedTask === null) {
+      .then((deletedAlbumlist) => {
+        if (deletedAlbumlist === null) {
           res.json({ message: 'sorry Albumlist not found' })
           // res.json takes an object, err or a custom one like message: .. { message: }
           return;
         }
-        res.json([{ message: 'task successfully deleted'}, deletedTask])
+        res.json([{ message: 'task successfully deleted'}, deletedAlbumlist])
       })
       .catch((err) => {
         res.json(err);

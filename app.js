@@ -8,7 +8,14 @@ const hbs          = require('hbs');
 const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
+const cors         = require('cors');
+// require cors as our security package so our API is enabled to receive server side requests as long as they're coming from this specific location - the react app.
 
+const session      = require('express-session');
+const passport     = require('passport');
+
+require('./config/passport-stuff');
+// requires configuration passport code we put in the config folder, passport-stuff file.
 
 mongoose
   .connect('mongodb://localhost/audiofy-api', {useNewUrlParser: true})
@@ -31,7 +38,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Express View engine setup
-
 app.use(require('node-sass-middleware')({
   src:  path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -51,8 +57,34 @@ app.locals.title = 'Express - Generated with IronGenerator';
 
 
 
+app.use(session({
+  secret:"some secret goes here",
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:3000']
+}));
+// cors is the security feature, thus it will accept requests as long as they come from localhost:3000 which is the route that the react app will have.
+
 const index = require('./routes/index');
 app.use('/', index);
+
+const userRoutes = require('./routes/user-routes');
+app.use('/api', userRoutes);
+// we will prefix all of our express routes with '/api'
+// so none of our React routes conflict with these routes.
+
+const playlistRoutes = require('./routes/playlist-routes');
+app.use('/api', playlistRoutes);
+
+const albumlistRoutes = require('./routes/albumlist-routes');
+app.use('/api', albumlistRoutes);
 
 
 module.exports = app;

@@ -7,7 +7,7 @@ const playlistSchema = new Schema({
       creator: { type: Schema.Types.ObjectId, ref:'User' },
       name: String,
       songs: [],
-      totalTime: number
+      totalTime: Number
 })
 
 const Playlist = mongoose.model('Playlist', playlistSchema);

@@ -7,7 +7,7 @@ const albumlistSchema = new Schema({
       creator: { type: Schema.Types.ObjectId, ref:'User' },
       name: String,
       albums: [],
-      totalTime: number
+      totalTime: Number
 })
 
 const Albumlist = mongoose.model('Albumlist', albumlistSchema);

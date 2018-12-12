@@ -7,7 +7,7 @@ const Playlist = require('../models/Playlist');
 // All Playlists List - Get Route
 router.get('/playlists', (req, res, next) => {
   // this route.. keep in mind, is ACTUALLY /api/playlists because we prefixed this ENTIRE file with /api.
-  // found in app.js line 58.
+  // /api found in app.js line 58.
 
     Playlist.find()
       .then((allThePlaylists) => {
@@ -30,7 +30,7 @@ router.get('/playlist-details/:id', (req, res, next) => {
       // when ANY route requires id, specific instance of a model, use REQ.PARAMS.ID inside the function argument. It will find the single playlist in the database.
       .then((aPlaylist) => {
         res.json(aPlaylist);
-          // ?? then render json for all the info about the playlist.
+          // ?? then render json for all the info about the playlist. this will reach out to the api for the target json's.
       })
       .catch((err) => {
           res.json(err);
@@ -41,7 +41,7 @@ router.get('/playlist-details/:id', (req, res, next) => {
 // in a pure express app w/o react or angular, to Create a New Task or Object Instance, it involves a get route where a user sees a form to fill in information.
 // then that form submits to a post route where the info is received and then a new instance is created.
 // However, with an API and a REACT front end, we only need one route.. the POST route, no get route, since React takes care of the get route for us.
-// The form the user will fill out will be in the React app, and we will have to retrofit the React app, so it can successfully make a post request useing Axios to the post route we define below.
+// The form the user will fill out will be in the React app, and we will have to retrofit the React app, so it can successfully make a post request using Axios to the post route we define below.
 
 // Add/Create a New Playlist - Post Route
 router.post('/playlists/add-new', (req, res, next) => {
@@ -76,9 +76,10 @@ router.post('/playlist-edit/:id', (req, res, next) => {
         res.json({ message: 'sorry no playlist found' });
         return;
       }
-      // if there isn't an error, and we can't find the instance with that id, then we do an if statement saying response === null then show a message. because this situation does not show a true console error.
+      // if there isn't an error, but we also can't find the instance with that id, then the response from the database will equal null. then we do an if statement saying if response === null then show a message. because this situation does not show a true console error.
         res.json([{ message: 'the playlist was successfully updated'}, response ])
         // after res.json, the message is an object within the argument, IF you want to console.log the response as well, then you must make the argument an array, object message being 0 index, response being 1 index.
+        // res.json needs to take an array OR an object as the argument. to add a message as well, its an array, and the 2nd argument is response.
     })
     .catch((err) => {
       res.json(err.message);
@@ -89,13 +90,13 @@ router.post('/playlist-edit/:id', (req, res, next) => {
 // Delete a Playlist - Post Route
 router.post('/playlist-delete/:id', (req, res, next) => {
     Playlist.findByIdAndRemove(req.params.id)
-      .then((deletedTask) => {
-        if (deletedTask === null) {
+      .then((deletedPlaylist) => {
+        if (deletedPlaylist === null) {
           res.json({ message: 'sorry playlist not found' })
           // res.json takes an object, err or a custom one like message: .. { message: }
           return;
         }
-        res.json([{ message: 'task successfully deleted'}, deletedTask])
+        res.json([{ message: 'task successfully deleted'}, deletedPlaylist])
       })
       .catch((err) => {
         res.json(err);
