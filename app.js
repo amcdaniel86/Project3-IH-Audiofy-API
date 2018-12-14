@@ -86,5 +86,7 @@ app.use('/api', playlistRoutes);
 const albumlistRoutes = require('./routes/albumlist-routes');
 app.use('/api', albumlistRoutes);
 
+const spotifyRoutes = require('./routes/spotify-routes');
+app.use('/api', spotifyRoutes);
 
 module.exports = app;
