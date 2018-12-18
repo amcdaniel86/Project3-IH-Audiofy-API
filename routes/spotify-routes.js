@@ -44,9 +44,9 @@ router.get('/getArtistSearch', (req, res, next )=> {
 
 
 
-var theSplitURL = req.body.theUrl.split('/')
+//var theSplitURL = req.body.theUrl.split('/')
 
-spotifyApi.getArtist(theSplitURL[theSplitURL.length-1])
+//spotifyApi.getArtist(theSplitURL[theSplitURL.length-1])
 
 
 
