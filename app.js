@@ -18,7 +18,7 @@ require('./config/passport-stuff');
 // requires configuration passport code we put in the config folder, passport-stuff file.
 
 mongoose
-  .connect('mongodb://localhost/audiofy-api', {useNewUrlParser: true})
+  .connect(process.env.MONGODB_URI, {useNewUrlParser: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
