@@ -13,6 +13,7 @@ const cors         = require('cors');
 
 const session      = require('express-session');
 const passport     = require('passport');
+const SpotifyWebApi = require('spotify-web-api-node');
 
 require('./config/passport-stuff');
 // requires configuration passport code we put in the config folder, passport-stuff file.
@@ -54,6 +55,24 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
+
+
+// Spotify API Middleware
+var clientId = 'bf4f2e16dab44e909c7210b553d8f1ca',
+var clientSecret = '2a8afeb4143548d9a4c372b9069fd617';
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : clientId,
+  clientSecret : clientSecret
+});
+
+// Retrieve Access Token
+spotifyApi.clientCredentialsGrant()
+  .then(function(data) {
+    spotifyApi.setAccessToken(data.body['access-token']);
+  }, function(err) {
+    console.log('error when retrieving access token', err);
+  });
 
 
 
