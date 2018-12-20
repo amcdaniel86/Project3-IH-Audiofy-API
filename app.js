@@ -13,6 +13,7 @@ const cors         = require('cors');
 
 const session      = require('express-session');
 const passport     = require('passport');
+
 const SpotifyWebApi = require('spotify-web-api-node');
 
 require('./config/passport-stuff');
@@ -57,22 +58,29 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.locals.title = 'Express - Generated with IronGenerator';
 
 
-// Spotify API Middleware
-var clientId = 'bf4f2e16dab44e909c7210b553d8f1ca',
-var clientSecret = '2a8afeb4143548d9a4c372b9069fd617';
+// // Spotify API Middleware
+// var clientId = process.env.CLIENTID; 
+// // client ID above
+// var clientSecret = process.env.CLIENTSECRETID;
+// // your secret
+// var redirect_uri = 'REDIRECT_URI';
+// // your redirect uri
 
-var spotifyApi = new SpotifyWebApi({
-  clientId : clientId,
-  clientSecret : clientSecret
-});
+// ERROR ABOVE ^^^^^
+ 
+// const spotifyApi = new SpotifyWebApi({
+//   clientId : clientId,
+//   clientSecret : clientSecret
+// });
 
-// Retrieve Access Token
-spotifyApi.clientCredentialsGrant()
-  .then(function(data) {
-    spotifyApi.setAccessToken(data.body['access-token']);
-  }, function(err) {
-    console.log('error when retrieving access token', err);
-  });
+// // Retrieve Access Token
+// spotifyApi.clientCredentialsGrant()
+//   .then((data) => {
+//     spotifyApi.setAccessToken(data.body['access_token']);
+//   })
+//     .catch((err) => {
+//     console.log('error when retrieving access token', err);
+//   });
 
 
 

@@ -25,20 +25,47 @@ spotifyApi.clientCredentialsGrant()
 });
 
 
-// Get Elvis' albums
-router.get('/getArtistSearch', (req, res, next )=> {
-  spotifyApi.searchArtists('eminem')
-  .then((data) => {
-    console.log('Artist albums', data.body);
-    // whatever request is used, .body is used to grab the information from the api
-    res.json(data.body)
-  })
-  .catch((err) => {
-    console.log(err);
-    res.json(err)
-  })
-})
 
+
+router.post('/artists', (req, res, next) => {
+  // console.log("*************", req.body.artistInput)
+  spotifyApi.searchArtists(req.body.artistInput)
+    .then(result => {
+      console.log(result.body.artists.items);
+      res.json({data: result.body.artists.items});
+      // don't think I need the res.render here because I'm using React.
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+router.get('/albums/:artistId', (req, res, next) => {
+  spotifyApi.getArtistAlbums(req.params.artistId)
+    .then((result) => {
+      console.log("the albums info ============== ", result.body.items);
+      res.json({data: result.body.items});
+      // body is storing information that is returned from spotify. then we choose which data we want.
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+router.get('/tracks/:albumId', (req, res, next) => {
+  spotifyApi.getAlbumTracks(req.params.albumId)
+    .then((result) => {
+      console.log("track info ---------- ", result.body.items[0]);
+      res.json({data: result.body.items});
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+
+    // whatever request is used, .body is used to grab the information from the api
+   
 // Add here spotify routes - and test them all in postman
 
 
@@ -47,12 +74,6 @@ router.get('/getArtistSearch', (req, res, next )=> {
 //var theSplitURL = req.body.theUrl.split('/')
 
 //spotifyApi.getArtist(theSplitURL[theSplitURL.length-1])
-
-
-
-
-
-
 
 
 module.exports = router;
