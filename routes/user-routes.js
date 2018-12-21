@@ -13,6 +13,7 @@ const User         = require('../models/User');
 
 // Register post route - TESTED
 router.post('/signup', (req, res, next) => {
+  console.log('sign up',req.params)
   const username = req.body.username;
   const password = req.body.password;
 
